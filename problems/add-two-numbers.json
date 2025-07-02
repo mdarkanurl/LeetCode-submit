@@ -1,0 +1,16 @@
+{
+  "id": "add-two-numbers",
+  "language": "javascript",
+  "functionName": "addTwoNumbers",
+  "testCases": [
+    {
+      "input": "[1, 2]",
+      "expected": "3"
+    },
+    {
+      "input": "[100, 200]",
+      "expected": "300"
+    }
+  ]
+}
+
