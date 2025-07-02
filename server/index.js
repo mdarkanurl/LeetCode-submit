@@ -1,7 +1,7 @@
 const express = require('express');
 const fs = require('fs');
 const path = require('path');
-const { execFileSync } = require('child_process');
+const { spawnSync } = require('child_process');
 const { v4: uuid } = require('uuid');
 
 const app = express();
@@ -37,8 +37,19 @@ app.post('/api/submit', async (req, res) => {
         for (let test of problem.testCases) {
             // Always pass input as a JSON array or string
             const input = test.input;
-            const output = execFileSync('node', ['runner.js', JSON.stringify(JSON.parse(input))], { cwd: tempDir, timeout: 2000 }).toString().trim();
+            const dockerArgs = [
+                'run', '--rm',
+                '-v', `${tempDir}:/app`,
+                '--memory', '100m', '--cpus', '0.5',
+                'leetcode-js',
+                'node', 'runner.js', JSON.stringify(JSON.parse(input))
+            ];
+            const result = spawnSync('docker', dockerArgs, { cwd: tempDir, timeout: 10000, encoding: 'utf-8' });
 
+            if (result.error) throw result.error;
+            if (result.status !== 0) throw new Error(result.stderr);
+
+            const output = result.stdout.trim();
             const passed = JSON.stringify(JSON.parse(output)) === JSON.stringify(JSON.parse(test.expected));
             results.push({
                 input: test.input,
