@@ -22,6 +22,10 @@ app.post('/api/submit', async (req, res) => {
     const userCodePath = path.join(tempDir, 'user_code.js');
     fs.writeFileSync(userCodePath, code);
 
+    // Save function name to temp dir
+    const functionNamePath = path.join(tempDir, 'function_name.txt');
+    fs.writeFileSync(functionNamePath, problem.functionName);
+
     // Copy runner.js
     const runnerSrc = path.resolve(__dirname, '../runner/javascript/template/runner.js');
     const runnerDest = path.join(tempDir, 'runner.js');

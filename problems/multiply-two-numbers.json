@@ -1,0 +1,26 @@
+{
+  "id": "multiply-two-numbers",
+  "functionName": "multiplyTwoNumbers",
+  "testCases": [
+    {
+      "input": "[2, 3]",
+      "expected": "6"
+    },
+    {
+      "input": "[10, 5]",
+      "expected": "50"
+    },
+    {
+      "input": "[0, 100]",
+      "expected": "0"
+    },
+    {
+      "input": "[-4, 6]",
+      "expected": "-24"
+    },
+    {
+      "input": "[10587, 7]",
+      "expected": "74109"
+    }
+  ]
+} 
