@@ -1,7 +1,7 @@
 const express = require('express');
 const fs = require('fs');
 const path = require('path');
-const { execSync } = require('child_process');
+const { execFileSync } = require('child_process');
 const { v4: uuid } = require('uuid');
 
 const app = express();
@@ -35,12 +35,9 @@ app.post('/api/submit', async (req, res) => {
 
     try {
         for (let test of problem.testCases) {
-            // Always pass input as a JSON array
+            // Always pass input as a JSON array or string
             const input = test.input;
-            const cmd = [
-                'node', 'runner.js', JSON.stringify(JSON.parse(input))
-            ];
-            const output = execSync(cmd.join(' '), { cwd: tempDir, timeout: 2000 }).toString().trim();
+            const output = execFileSync('node', ['runner.js', JSON.stringify(JSON.parse(input))], { cwd: tempDir, timeout: 2000 }).toString().trim();
 
             const passed = JSON.stringify(JSON.parse(output)) === JSON.stringify(JSON.parse(test.expected));
             results.push({
